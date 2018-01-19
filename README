@@ -1,0 +1,88 @@
+zaozi -- Create an SVG image from IDS
+=====================================
+
+Creates an SVG image of a Chinese character from its Ideographic Decomposition Sequence.
+
+Written by Demian Terentev <mnyonpa@gmail.com>.
+
+Requirements (Ruby version):
+---------------------------
+
+* Ruby 1.9 or 2.0
+* json
+
+Requirements (Python version):
+-----------------------------
+
+* Python 2.7
+
+Usage:
+-----
+
+Try to call it providing an IDS of a character on the command line.
+
+IDS should be a Unicode Ideographic Description Character
+(one of ⿰⿱⿲⿳⿴⿵⿶⿷⿸⿹⿺⿻ or its corresponding mnemonic 
+LR, UD, LCR, UCD, S, SU, SD, SL, SLU, SRU, SLD, OV) followed by its arguments.
+
+Complex characters requiring several IDS are not supported yet.
+
+Examples:
+
+```
+zaozi.rb ⿰言彦 # Outputs an SVG of 諺
+zaozi.rb ⿰口薩 # Outputs an SVG of a (non-existing) character 薩 with radical 口
+zaozi.rb ⿰米广 # Outputs an SVG of a Second Simplification version of 糖
+
+zaozi.rb ⿱木子 # Outputs an SVG of 李
+zaozi.rb ⿱一贝 # Outputs an SVG of a (non-existing) simplification of 買
+
+zaozi.rb ⿲氵古月 # Outputs an SVG of 湖
+zaozi.rb ⿴囗玉 # Outputs an SVG of 国
+zaozi.rb ⿻木从 # Outputs an SVG of 來
+```
+
+scales.json
+-----------
+
+The script knows how to scale elements of the character from `scales.json`
+file.
+
+It contains JSON object of several levels of nested data.
+
+The keys of the root object Ideographic Description Characters.
+Under each key there is an array of objects corresponding to the
+first, second, and, if present, third component of the character.
+Keys of each object are described in the following paragraph.
+Its values are arrays of 4 elements, corresponding to horizontal offset, vertical
+offset, horizontal scale and vertical scale values. Values are relative.
+
+The keys mentioned are optionally radicals requiring special treatment (radicals
+sharing the same scale data can be listed together as key of comma-separated
+values to avoid duplication) and a required "*" object for a general case.
+
+First two components may have special keys for taking another component into
+consideration. In this case the key should contain two characters, one of which
+may be replaced with '*' for a general case.
+
+Known flaws:
+-----------
+
+* Some radicals, e.g. 毛, 气, as well components of the ⿻ transformation
+  should ideally undergo uneven scaling and currently don’t look very well.
+
+TODO:
+----
+
+* Convenient js-powered interface for the web app so that users can click on buttons
+with required IDS and radicals. 
+
+* And a lot more work…
+
+Kudos:
+-----
+
+Author expresses his gratitude to [WERTA](http://magazeta.com/author/werta/)
+for his [article](http://magazeta.com/2012/08/cjk-and-unicode/) that served as
+the main inspiration and the source of some important infirmation for the
+project.
